@@ -191,15 +191,33 @@ f4:
 
 	ret
 
-########### f5 ###############		
-	.globl	f5
+
+########### f5 ###############
+        .globl  f5
 f5:
 ### Start function
         movq    $0, %rax    # clear out rax
 
+        movq    (%rdi), %rcx
+        testl   %ecx, %ecx      # Important to use ecx instead of rcx
+        jz      f5_done         # If the int at the pointer is 0, the array is empty
+
+f5_loop:
+
+        addl    %ecx, %eax
+        addq    $4, %rdi        #Move the pointer to the next int in the array
+
+        movq    (%rdi), %rcx
+        testl   %ecx, %ecx      # Important to use ecx instead of rcx
+        jnz     f5_loop         # If the int at the pointer is not 0, keep looping
+
+f5_done:
+
+
 ### End function
 
-	ret
+        ret
+
 
 ########### f6 ###############			
 	.globl	f6
