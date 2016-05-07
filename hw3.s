@@ -192,18 +192,37 @@ f3_done:
 
 	ret
 
-########### f4 ###############		
-	.globl	f4
+########### f4 ###############
+        .globl  f4
 f4:
 ### Start function
-        movq    $0, %rax    # clear out rax
+        movq    $0, %rax                # Zero out the return
+        movl    $-1, %eax               # Return -1 if no negative elements are found
 
+        movq    (%rdi), %rcx    # Get the value at the current index of the array
+        testl   %ecx, %ecx      # Important to use ecx instead of rcx
+        jz      f2_done         # If the int at the pointer is 0, the array is empty
 
+f4_loop:
+
+        cmpl    %ecx, %eax              # Minimum - Current value
+        js     f4_not_lower             # If the current value is lower (farther from 0) than the minimum,
+
+        movl    %ecx, %eax              # Set the minimum to the current value
+
+f4_not_lower:
+
+        addq    $4, %rdi #Move the pointer to the next int in the array
+
+        movq    (%rdi), %rcx
+        testl   %ecx, %ecx      # Important to use ecx instead of rcx
+        jnz     f4_loop         # If the int at the pointer is not 0, keep looping
+
+f4_done:
 
 ### End function
 
-	ret
-
+        ret
 
 ########### f5 ###############
         .globl  f5
