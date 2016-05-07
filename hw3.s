@@ -65,13 +65,46 @@ sum2:
 	popq %rbp         # pop the base pointer and load it into %rbp
 	ret               # pop the instruction pointer into %rip
 
-
-########### f1 ###############	
-	.globl	f1
+########### f1 ###############
+        .globl  f1
 f1:
+
+# Pointer to an int is passed into rdi
+
 ### Start function
         movq    $0, %rax
-	
+
+#       These use an index
+#       movq    $0, %rsi                # rsi used to track the current index
+#       movq    (%rdi, %rsi, 4), %rcx   # rcx used as a temporary to compare
+#       testl   %ecx, %ecx
+#       jz      f1_done         # If the int at the pointer is 0, the array is empty
+
+
+#       The final version uses pointer arithmetic
+        movq    (%rdi), %rcx
+        testl   %ecx, %ecx      # Important to use ecx instead of rcx
+        jz      f1_done         # If the int at the pointer is 0, the array is empty
+
+f1_loop:
+
+        inc     %rax # Increment the return value
+#       inc     %rsi # Increment the index
+
+        addq    $4, %rdi #Move the pointer to the next int in the array
+
+#       These use an index
+#       movq    (%rdi, %rsi, 4), %rcx # rcx used as a temporary to compare
+#       testl   %ecx, %ecx
+#       jnz     f1_loop         # If the int at the pointer is not 0, keep looping
+
+#       The final version uses pointer arithmetic
+        movq    (%rdi), %rcx
+        testl   %ecx, %ecx      # Important to use ecx instead of rcx
+        jnz     f1_loop         # If the int at the pointer is not 0, keep looping
+
+f1_done:
+
 ### End function
 
 	ret
