@@ -1,0 +1,125 @@
+CS201: HW #3
+Instructor: David Baldwin 
+Due date: See D2L
+
+=== OVERVIEW ===
+
+In this assignment, we will be writing some basic functions in X86-64
+assembly. For a comprehensive reference of the X86-64
+instruction sets, see
+
+http://www.intel.com/content/www/us/en/processors/architectures-software-developer-manuals.html
+
+
+=== COMPILATION ===
+
+You should write your assembly code in the provided hw3.s
+
+To compile the code, run
+
+> gcc -O0 -o hw3 main.c hw3.s
+
+Running ./hw3 will execute the test harness that runs some basic teste
+against your code.  
+
+=== ASSIGNMENT ===
+
+You will write assembly code to implement a series of simple functions
+in hw3.s.  The functions you are to author are as follows:
+
+The first four functions take 32-bit integers as parameters and return
+the same.
+
+pow2: Return 2 to the power of the first argument in %eax 
+
+sum: Return x + y in %eax given that x is provided as the first argument and y
+as the second
+
+mypow: Return x to the power of y in %eax given that x is provided as the
+first argument and y as the second 
+
+sum2: Given integer parameters a,b,c,d,e,f and g, return a+b+c+d+e+f+g in %eax
+
+Functions f1-f6 require you to operate on an (int *) type (64 bits)
+pointing to an array of 32-bit integers. No array length is provided,
+but the arrays are always terminated by a zero. You should not alter
+the data within the array!
+
+f1: Return the length of the input array in %eax.
+
+f2: Return the largest number from the array in %eax.
+
+f3: Return the position of the largest number in the array
+           in %eax.
+
+f4: Return the smallest negative number (i.e., the largest value of
+    abs(x) s.t. x<0) from the array in %eax. If there is no negative
+    number, return -1
+
+f5: Return the sum of all the integers in the array in %eax
+
+f6: Return the average of all the integers in the array in %eax.  Use
+    integral division.  HINT:The final problem is tricky because of
+    the usage of idiv.  You may find it useful to use the instructions
+    `cltq` and `cqto`
+
+
+There are many ways to write these programs.  Strive for clarity in
+your code rather than brevity. Comments are extremely helpful in
+assembly code and it is suggested you use them liberally to describe
+each register and any non-trivial computations.
+
+=== HINTS ===
+
+- The first 6 parameters to a function are passed via the registers
+  
+     rdi,rsi,rdx,rcx,r8,r9
+
+  The 32-bit virtual registers for these (in same order)
+
+     edi,esi,edx,ecx,r8d,r9d
+
+  The rest of the parameters are pushed on to the stack. Return values
+  are set in (r/e)ax
+
+- If the code uses rbx, rbp, r12, r13, r14, or r15, then it must
+   restore them to their original values before it ends. You are free
+   to use r10 and r11 as scratch registers.
+
+- You can run gdb directly on the `hw3` file.  To see the assembly
+  code, type (within gdb -tui)
+
+> layout asm
+
+- Be careful to use the correct register/operation depending on your
+  data type.  In this assignment, all integers will be 32 bits and all
+  pointers will be 64 bits.
+
+- Remember that any labels you use can be 'jmp'ed to anywhere in
+  hw3.s. Many of the problems will have similar structure - if you
+  decide to copy/paste your code into a new function as a starting
+  point, you'll need to rename the labels
+
+  It is suggested you preface any labels in your code with the name of
+  the function - for example
+
+########### f1 ###############	
+	.globl	f1
+f1:
+### Start function
+        movq    $0, %rax
+	
+f1_loop:
+	.... your code here ... 
+
+
+=== SUBMISSION ===
+
+Submit your hw3.s file to D2L. hw3.s should compile without error/warning
+with the tests provided in main.c, but you need not submit that
+file. Any other files you use to facilitate your development
+(Makefile) need not be included
+
+You will be graded primarily on the correctness of your functions
+(90%) with the remainder (10%) counting towards the clarity of your
+code and additional software engineering considerations.
