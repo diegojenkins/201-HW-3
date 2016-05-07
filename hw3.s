@@ -44,7 +44,18 @@ sum2:
 	movq  %rsp, %rbp  # move the previous stack pointer to the new base pointer
 
 ### Start function
-	movq    $0, %rax   # result goes in rax
+        movq    $0, %rax   # result goes in rax
+
+        addl    %edi, %eax
+        addl    %esi, %eax
+        addl    %edx, %eax
+        addl    %ecx, %eax
+        addl    %r8d, %eax
+        addl    %r9d, %eax
+
+        addl    16(%rsp), %eax #NEEDS COMMENT
+
+
 
 ### End function
 	popq %rbp         # pop the base pointer and load it into %rbp
