@@ -25,16 +25,20 @@ mypow:
 	movq    $0, %rax   # result goes in rax
 
 ### End function
-	.globl	sum
+
 
 ########### sum ###############
-	
+        .globl  sum
 sum:
 ### Start function
-	movq    $0, %rax   # result goes in rax
+        movq    $0, %rax   # result goes in rax
+
+        addl    %edi, %eax
+        addl    %esi, %eax
+
 ### End function
 
-	ret
+        ret
 
 ########### sum2 ###############	
 	.globl	sum2
