@@ -110,24 +110,70 @@ f1_done:
 	ret
 
 
-########### f2 ###############	
-	.globl	f2
+
+########### f2 ###############
+        .globl  f2
 f2:
 ### Start function
 
         movq    $0, %rax
 
+        movq    (%rdi), %rcx
+        testl   %ecx, %ecx      # Important to use ecx instead of rcx
+        jz      f2_done         # If the int at the pointer is 0, the array is empty
+
+f2_loop:
+        cmpl    %ecx, %eax      # Current value - maximum
+        jns     f2_not_higher
+
+        movl    %ecx, %eax
+
+f2_not_higher:
+
+        addq    $4, %rdi #Move the pointer to the next int in the array
+
+        movq    (%rdi), %rcx
+        testl   %ecx, %ecx      # Important to use ecx instead of rcx
+        jnz     f2_loop         # If the int at the pointer is not 0, keep looping
+
+f2_done:
+
+
 ### End function
 
-	ret
+        ret
 
-########### f3 ###############		
-	.globl	f3
+
+
+########### f3 ###############
+        .globl  f3
 f3:
 ### Start function
-        movq    $0, %rax   # rax will hold max index
+        movq    $0, %rax        # rax will hold max index
 
+        movq    $0, %rsi        # used for tracking the highest value
+        movq    $0, %rdx        # used for tracking the current index
 
+        movq    (%rdi), %rcx
+        testl   %ecx, %ecx      # Important to use ecx instead of rcx
+        jz      f3_done         # If the int at the pointer is 0, the array is empty
+
+f3_loop:
+        cmpl    %ecx, %esi      # Current value - maximum
+        jns     f3_not_higher
+
+        movl    %ecx, %esi      # copy the current into the maximum value
+        movq    %rdx, %rax      # copy the current index into the highest index
+
+f3_not_higher:
+        inc     %rdx            #increment the index
+        addq    $4, %rdi        #Move the pointer to the next int in the array
+
+        movq    (%rdi), %rcx
+        testl   %ecx, %ecx      # Important to use ecx instead of rcx
+        jnz     f3_loop         # If the int at the pointer is not 0, keep looping
+
+f3_done:
 
 ### End function
 
