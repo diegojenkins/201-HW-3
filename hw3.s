@@ -19,13 +19,26 @@ pow2:
 
 
 ########### mypow ###############
-	.globl	mypow
+        .globl  mypow
 mypow:
 ### Start function
-	movq    $0, %rax   # result goes in rax
+        movq    $0, %rax        # result goes in rax
+        movl    $1, %eax        # move 1 to the return
+
+        testl   %esi, %esi      #
+        jz      mypow_done      # If y is not yet 0, keep looping
+mypow_loop:
+        dec     %esi            # Decrement y
+
+        imul    %edi, %eax      # Multiply the return by x
+        testl   %esi, %esi      #
+        jnz     mypow_loop      # If y is not yet 0, keep looping
+
+mypow_done:
 
 ### End function
 
+        ret
 
 ########### sum ###############
         .globl  sum
