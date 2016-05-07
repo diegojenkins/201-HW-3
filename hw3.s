@@ -251,16 +251,38 @@ f5_done:
         ret
 
 
-########### f6 ###############			
-	.globl	f6
+########### f6 ###############
+        .globl  f6
 f6:
 ### Start function
-        movq    $0, %rax    # clear out rax
+        movq    $0, %rax        # clear out rax
+        movq    $0, %rsi        # used for tracking the count
+
+        movq    (%rdi), %rcx
+        testl   %ecx, %ecx      # Important to use ecx instead of rcx
+        jz      f6_done         # If the int at the pointer is 0, the array is empty
+
+f6_loop:
+        inc     %rsi            # Increment the count
+
+        addl    %ecx, %eax
+        addq    $4, %rdi        # Move the pointer to the next int in the array
+
+        movq    (%rdi), %rcx
+        testl   %ecx, %ecx      # Important to use ecx instead of rcx
+        jnz     f6_loop         # If the int at the pointer is not 0, keep looping
+
+        cltq
+        cqto
+        idivq   %rsi            # Otherwise divide the sum by the count
+
+f6_done:
 
 ### End function
 
-	ret
+        ret
 
-	
+
+
 
 	
