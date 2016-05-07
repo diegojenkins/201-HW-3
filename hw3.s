@@ -7,10 +7,15 @@ pow2:
 ### Start function
         movq    $0, %rax    # result goes in rax
 
+        movl    $1, %eax    # Set the smallest bit of eax
+        movl    %edi, %ecx  # Copy from the argument to the CL register, which is the smallest byte of ecx
+        sall    %cl, %eax   # Shift left by 1 CL times, equivalent to multiplying by 2 CL times
 
 ### End function
 
-	ret
+        ret
+
+
 
 
 ########### mypow ###############
