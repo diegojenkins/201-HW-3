@@ -63,14 +63,15 @@ sum2:
 ### Start function
         movq    $0, %rax   # result goes in rax
 
-        addl    %edi, %eax
-        addl    %esi, %eax
-        addl    %edx, %eax
-        addl    %ecx, %eax
-        addl    %r8d, %eax
-        addl    %r9d, %eax
 
-        addl    16(%rsp), %eax #NEEDS COMMENT
+        addl    %edi, %eax	#Copy from the first six arguments
+        addl    %esi, %eax	#
+        addl    %edx, %eax	#
+        addl    %ecx, %eax	#
+        addl    %r8d, %eax	#
+        addl    %r9d, %eax	#
+
+        addl    16(%rsp), %eax #Copy from the 7th argument, stored on the stack
 
 
 
